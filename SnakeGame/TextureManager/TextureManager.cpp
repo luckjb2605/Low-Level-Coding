@@ -1,18 +1,18 @@
-#include "TextureManager.h"
+#include "TextureManager/TextureManager.h"
 
-std::unordered_map<std::string, Texture2D>
+std::unordered_map<TextureName, Texture2D> 
   TextureManager::textures;
 
 void TextureManager::Load(
-  const std::string& name, 
+  const TextureName name,
   const std::string& path
 ) {
   textures[name] = LoadTexture(path.c_str());
 }
 
-Texture2D TextureManager::Get(const std::string& name)
+Texture2D* TextureManager::Get(TextureName name)
 {
-  return textures.at(name);
+  return &textures.at(name);
 }
 
 void TextureManager::UnloadAll()

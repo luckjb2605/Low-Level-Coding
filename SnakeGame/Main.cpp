@@ -1,51 +1,64 @@
-#include <iostream>
 #include <raylib.h>
-#include <vector>
+#include <deque>
 
-#include "objects/Food.h"
-#include "TextureManager.h"
+#include "TextureManager/TextureManager.h"
+#include "Board/Board.h"
+#include "Game/Game.h"
 
-Color green = {173, 204, 96, 255};
-Color darkGreen = {43, 51, 24, 255};
+const int cellCount = 25;
+const float cellSize = 30;
+const int windowSize = cellCount * cellSize;
 
-const float cellSize = 50;
-const int cellCount = 15;
-const float windowSize = cellSize * cellCount;
+const Color green = {139, 195, 74, 255};
+const Color darkGreen = {76, 175, 80, 255};
+
+double lastUpdateTime = 0;
+bool intervalPassed(double interval)
+{
+  double currentTime = GetTime();
+  if (currentTime - lastUpdateTime >= interval)
+  {
+    lastUpdateTime = currentTime;
+    return true;
+  }
+  return false;
+}
 
 int main(void)
 {
-  std::cout<<"Starting the game...\n";
-
   InitWindow(windowSize, windowSize, "Retro Snake");
   SetTargetFPS(60);
 
-  TextureManager::Load("apple", "assets/apple.png");
+  Board board = Board(cellCount, cellSize);
 
-  std::vector<std::vector<Food>> foodArray(cellCount, std::vector<Food>(cellCount));
+  TextureManager::Load(
+    TextureName::Apple, 
+    "assets/apple.png"
+  );
 
-  for (int i = 0; i < cellCount; i++)
-  {
-    for (int j = 0; j < cellCount; j++)
-    {
-      Food food ({i, j}, TextureManager::Get("apple"));
-      foodArray[i][j] = food;
-    }
-  }
-  
+  Game game = Game(board);
+
   while(!WindowShouldClose())
   {
     BeginDrawing();
-    
-      ClearBackground(green);
+      
+      board.Draw(green, darkGreen);
+      game.Draw();
+      
+      if (intervalPassed(0.2))
+        game.Update();
 
-      for (const auto& row : foodArray)
-      {
-        for (const auto& food : row)
-        {
-          food.Draw(cellSize);
-        }
-      }
-    
+      if (IsKeyPressed(KEY_W))
+        game.ChangeSnakeDirection(Direction::UP);
+      if (IsKeyPressed(KEY_A))
+        game.ChangeSnakeDirection(Direction::LEFT);
+      if (IsKeyPressed(KEY_S))
+        game.ChangeSnakeDirection(Direction::DOWN);
+      if (IsKeyPressed(KEY_D))
+        game.ChangeSnakeDirection(Direction::RIGHT);
+
+      game.CheckCollisionWithFood();
+        
     EndDrawing();
   }
 

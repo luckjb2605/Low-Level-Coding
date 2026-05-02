@@ -32,10 +32,5 @@ pendulum_DEFAULT = double-pendulum
 pendulum_EXT = c
 pendulum_COMPILER = gcc
 
-snake_SRC = SnakeGame
-snake_DEFAULT = main
-snake_EXT = cpp
-snake_COMPILER = g++
-
 clean:
 	rm -f $(BUILD_DIR)/*.exe
