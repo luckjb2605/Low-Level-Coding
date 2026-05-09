@@ -11,7 +11,7 @@ class BodyPart
 {
   public:
     BodyPart(Vector2 pos);
-    void Draw(float size, Color color);
+    void Draw(float size, float offset, Color color);
     void UpdatePos(Vector2 direction);
     Vector2 GetPos();
   private:

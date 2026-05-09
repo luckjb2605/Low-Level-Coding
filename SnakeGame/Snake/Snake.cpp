@@ -1,7 +1,9 @@
 #include "Snake.h"
 
+Snake::Snake(Board& board)
+  : board(board),justAte(false){Reset();}
 Snake::Snake(Board& board, std::deque<Vector2> temp)
-  : board(board)
+  : board(board), justAte(false)
 {
   for (const auto& pos : temp)
   {
@@ -12,8 +14,8 @@ Snake::Snake(Board& board, std::deque<Vector2> temp)
 void Snake::SetDirection(Direction newDir)
 {
   if (
-    direction == Direction::UP && newDir == Direction::DOWN ||
-    direction == Direction::DOWN && newDir == Direction::UP ||
+    direction == Direction::UP    && newDir == Direction::DOWN ||
+    direction == Direction::DOWN    && newDir == Direction::UP ||
     direction == Direction::LEFT && newDir == Direction::RIGHT ||
     direction == Direction::RIGHT && newDir == Direction::LEFT
   ) {
@@ -45,7 +47,7 @@ void Snake::Draw(Color color)
 {
   for (auto& part : body)
   {
-    part.Draw(board.cellSize, color);
+    part.Draw(board.cellSize, board.offset, color);
   }
 }
 
@@ -54,10 +56,56 @@ void Snake::Update()
   BodyPart newHead = body[0];
   newHead.UpdatePos(DirectionToVector());
   body.push_front(newHead);
-  body.pop_back();
+  if (!justAte)
+  {
+    body.pop_back();
+    return;
+  }
+  justAte = false;
 }
 
 bool Snake::IsHeadAt(Vector2 pos)
 {
   return Vector2Equals(body[0].GetPos(), pos);
+}
+
+Vector2 Snake::Head()
+{
+  return body[0].GetPos();
+}
+
+void Snake::Eat()
+{
+  justAte = true;
+}
+
+void Snake::Reset()
+{
+  direction = Direction::RIGHT;
+  body.clear();
+  int length = board.cellCount / 3;
+  for (int i = length; i > 0; i--)
+  {
+    body.push_back({{(float)i, 1.0f}});
+  }
+}
+
+bool Snake::HasInsideDeque(
+  const std::deque<BodyPart>& deque,
+  Vector2 pos
+) {
+  for (auto part : deque)
+  {
+    if (Vector2Equals(part.GetPos(), pos))
+    return true;
+  }
+  return false;
+}
+bool Snake::HasInsideBody(Vector2 pos)
+{ return HasInsideDeque(body, pos); }
+bool Snake::HeadInsideBody()
+{
+  std::deque<BodyPart> headlessBody = body;
+  headlessBody.pop_front();
+  return HasInsideDeque(headlessBody, Head());
 }
