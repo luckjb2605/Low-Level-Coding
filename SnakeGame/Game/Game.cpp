@@ -1,13 +1,18 @@
 #include "Game.h"
 
-Game::Game(Board& board)
+Game::Game(Board& board, Music music)
 : board(board),
   snake(board),
   food(board, 
     TextureManager::Get(TextureName::Apple),
     GetFoodPosition()
-  ), running(false) {}
+  ), running(false),
+  eat(LoadSound("assets/eat.wav")),
+  music(music), started(false) {}
 
+void Game::Play() { started = true; }
+bool Game::Started() { return started; }
+  
 void Game::Draw()
 {
   food.Draw();
@@ -20,7 +25,12 @@ void Game::Update()
 }
 
 bool Game::IsRunning() { return running; }
-void Game::SwitchPause() { running = !running; }
+void Game::SwitchPause()
+{
+  running = !running;
+  if (running) ResumeMusicStream(music);
+  else PauseMusicStream(music);
+}
 int Game::GetScore() { return score; }
 
 Vector2 Game::GetFoodPosition()
@@ -43,6 +53,7 @@ void Game::CheckCollisionWithFood()
   {
     food.SetPos(GetFoodPosition());
     snake.Eat();
+    PlaySound(eat);
     score++;
   }
 }
@@ -53,6 +64,8 @@ void Game::GameOver()
   snake.Reset();
   running = false;
   score = 0;
+  started = false;
+  StopMusicStream(music);
 }
 
 void Game::CheckCollisionWithBorder()

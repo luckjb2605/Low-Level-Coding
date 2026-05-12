@@ -118,7 +118,6 @@ void FillRays(SDL_Surface* surface, Ray rays[RAYS_NUMBER], Circle shadow, Uint32
 
       x_draw += cos(ray.angle);
       y_draw += sin(ray.angle);
-      
     }
   }
 }

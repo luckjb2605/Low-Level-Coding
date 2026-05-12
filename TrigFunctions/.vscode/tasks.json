@@ -1,0 +1,28 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build main",
+      "command": "g++",
+      "type": "shell",
+      "args": [
+        "main.cpp",
+        "drawer.cpp",
+        "-o",
+        "main",
+        "-lSDL2"
+      ],
+      "group": "build"
+    },
+    {
+      "label": "Run main",
+      "type": "shell",
+      "command": "./main",
+      "dependsOn": "Build main",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}

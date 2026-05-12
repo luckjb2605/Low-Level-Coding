@@ -13,10 +13,12 @@ const Color snakeGreen = {43, 51, 24, 255};
 class Game
 {
 public:
-  Game(Board& board);
+  Game(Board& board, Music music);
   void Draw();
+  void Play();
   void Update();
   int GetScore();
+  bool Started();
   bool IsRunning();
   void SwitchPause();
   void ChangeSnakeDirection(Direction direction);
@@ -32,4 +34,7 @@ private:
   int score = 0;
   void GameOver();
   Vector2 GetFoodPosition();
+  Sound eat;
+  Music music;
+  bool started;
 };

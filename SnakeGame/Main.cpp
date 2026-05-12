@@ -5,8 +5,8 @@
 #include "Board/Board.h"
 #include "Game/Game.h"
 
-const int cellCount = 15;
-const float cellSize = 25;
+const int cellCount = 20;
+const float cellSize = 30;
 const float offset = cellSize * 2;
 const int windowSize =
   cellCount * cellSize + 2 * offset;
@@ -19,6 +19,7 @@ const float titleSize = offset * 2 / 3;
 const float textSize = windowSize / 20;
 const float scoreSize = offset * 1 / 2;
 
+const double frame_duration = 0.1;
 double lastUpdateTime = 0;
 bool intervalPassed(double interval)
 {
@@ -34,34 +35,45 @@ bool intervalPassed(double interval)
 int main(void)
 {
   InitWindow(windowSize, windowSize, "Retro Snake");
+  InitAudioDevice();
   SetTargetFPS(60);
 
+  Music music = LoadMusicStream("assets/pvz_ost.mp3");
+  
   Board board = Board(cellCount, cellSize, offset);
-
+  
   TextureManager::Load(
     TextureName::Apple, 
     "assets/apple.png"
   );
-
-  Game game = Game(board);
+  
+  Game game = Game(board, music);
 
   while(!WindowShouldClose())
   {
+    UpdateMusicStream(music);
     BeginDrawing();
-      
-      board.Draw(green, darkGreen);
-      board.DrawFrame(frameThickness, snakeGreen);
-      board.DrawTitle(titleSize, snakeGreen);
-      board.DrawScore(scoreSize, snakeGreen, 
-        game.GetScore(), frameThickness);
+    
+    board.Draw(green, darkGreen);
+    board.DrawFrame(frameThickness, snakeGreen);
+    board.DrawTitle(titleSize, snakeGreen);
+    board.DrawScore(scoreSize, snakeGreen, 
+      game.GetScore(), frameThickness);
       game.Draw();
-
+      
       if (IsKeyPressed(KEY_SPACE))
+      {
+        if (!game.Started())
+        {
+          PlayMusicStream(music);
+          game.Play();
+        }
         game.SwitchPause();
+      }
       
       if (game.IsRunning())
       {
-        if (intervalPassed(0.2))
+        if (intervalPassed(frame_duration))
         {
           game.Update();
           game.CheckCollisionWithFood();
@@ -77,14 +89,22 @@ int main(void)
         game.ChangeSnakeDirection(Direction::DOWN);
         if (IsKeyPressed(KEY_D))
         game.ChangeSnakeDirection(Direction::RIGHT);
+        
+        if (IsKeyPressed(KEY_M))
+        {
+          StopMusicStream(music);
+          PlayMusicStream(music);
+        }
       } else {
         board.DrawPauseScreen(textSize, snakeGreen);
       }
       
-    EndDrawing();
-  }
-
-  TextureManager::UnloadAll();
+      EndDrawing();
+    }
+    
+    TextureManager::UnloadAll();
+    StopMusicStream(music);
+  CloseAudioDevice();
   CloseWindow();
   return 0;
 }
