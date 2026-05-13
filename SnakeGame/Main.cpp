@@ -58,52 +58,54 @@ int main(void)
     board.DrawFrame(frameThickness, snakeGreen);
     board.DrawTitle(titleSize, snakeGreen);
     board.DrawScore(scoreSize, snakeGreen, 
-      game.GetScore(), frameThickness);
-      game.Draw();
-      
-      if (IsKeyPressed(KEY_SPACE))
+    game.GetScore(), game.GetHighscore(),
+    frameThickness);
+    game.Draw();
+    
+    if (IsKeyPressed(KEY_SPACE)
+    || IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      if (!game.Started())
       {
-        if (!game.Started())
-        {
-          PlayMusicStream(music);
-          game.Play();
-        }
-        game.SwitchPause();
+        PlayMusicStream(music);
+        game.Play();
       }
-      
-      if (game.IsRunning())
-      {
-        if (intervalPassed(frame_duration))
-        {
-          game.Update();
-          game.CheckCollisionWithFood();
-          game.CheckCollisionWithBorder();
-          game.CheckCollisionWithBody();
-        }
-        
-        if (IsKeyPressed(KEY_W))
-        game.ChangeSnakeDirection(Direction::UP);
-        if (IsKeyPressed(KEY_A))
-        game.ChangeSnakeDirection(Direction::LEFT);
-        if (IsKeyPressed(KEY_S))
-        game.ChangeSnakeDirection(Direction::DOWN);
-        if (IsKeyPressed(KEY_D))
-        game.ChangeSnakeDirection(Direction::RIGHT);
-        
-        if (IsKeyPressed(KEY_M))
-        {
-          StopMusicStream(music);
-          PlayMusicStream(music);
-        }
-      } else {
-        board.DrawPauseScreen(textSize, snakeGreen);
-      }
-      
-      EndDrawing();
+      game.SwitchPause();
     }
     
-    TextureManager::UnloadAll();
-    StopMusicStream(music);
+    if (game.IsRunning())
+    {
+      if (intervalPassed(frame_duration))
+      {
+        game.Update();
+        game.CheckCollisionWithFood();
+        game.CheckCollisionWithBorder();
+        game.CheckCollisionWithBody();
+      }
+      
+      if (IsKeyPressed(KEY_W)||IsKeyPressed(KEY_UP))
+      game.ChangeSnakeDirection(Direction::UP);
+      if (IsKeyPressed(KEY_A)||IsKeyPressed(KEY_LEFT))
+      game.ChangeSnakeDirection(Direction::LEFT);
+      if (IsKeyPressed(KEY_S)||IsKeyPressed(KEY_DOWN))
+      game.ChangeSnakeDirection(Direction::DOWN);
+      if (IsKeyPressed(KEY_D)||IsKeyPressed(KEY_RIGHT))
+      game.ChangeSnakeDirection(Direction::RIGHT);
+      
+      if (IsKeyPressed(KEY_M))
+      {
+        StopMusicStream(music);
+        PlayMusicStream(music);
+      }
+    } else {
+      board.DrawPauseScreen(textSize, snakeGreen);
+    }
+    
+    EndDrawing();
+  }
+  
+  TextureManager::UnloadAll();
+  StopMusicStream(music);
   CloseAudioDevice();
   CloseWindow();
   return 0;

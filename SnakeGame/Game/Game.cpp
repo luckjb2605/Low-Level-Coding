@@ -6,9 +6,13 @@ Game::Game(Board& board, Music music)
   food(board, 
     TextureManager::Get(TextureName::Apple),
     GetFoodPosition()
-  ), running(false),
+  ),
+  running(false),
+  score(0),
+  highscore(0),
   eat(LoadSound("assets/eat.wav")),
-  music(music), started(false) {}
+  music(music),
+  started(false) {}
 
 void Game::Play() { started = true; }
 bool Game::Started() { return started; }
@@ -32,6 +36,7 @@ void Game::SwitchPause()
   else PauseMusicStream(music);
 }
 int Game::GetScore() { return score; }
+int Game::GetHighscore() { return highscore; }
 
 Vector2 Game::GetFoodPosition()
 {
@@ -55,6 +60,8 @@ void Game::CheckCollisionWithFood()
     snake.Eat();
     PlaySound(eat);
     score++;
+    if (score>highscore)
+      highscore = score;
   }
 }
 

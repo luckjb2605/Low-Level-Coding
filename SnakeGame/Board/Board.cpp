@@ -65,13 +65,23 @@ void Board::DrawPauseScreen(int fontSize, Color color)
   );
 }
 
-void Board::DrawScore(int fontSize, Color color, int score, int thickness)
+const int GAP = 20;
+void Board::DrawScore(int fontSize, Color color, 
+  int score, int highscore, int thickness)
 {
-  const char* text = TextFormat("Score: %i", score);
-  const int width = MeasureText(text, fontSize);
+  const char* scoreText = TextFormat("Score: %i", score);
+  const int scoreWidth = MeasureText(scoreText, fontSize);
   DrawText(
-    text,
+    scoreText,
     offset,
+    offset + cellSize*cellCount + 2*thickness,
+    fontSize,
+    color
+  );
+  const char* highscoreText = TextFormat("Highscore: %i", highscore);
+  DrawText(
+    highscoreText,
+    offset + scoreWidth + GAP,
     offset + cellSize*cellCount + 2*thickness,
     fontSize,
     color

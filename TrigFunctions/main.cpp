@@ -15,6 +15,8 @@ int main(void)
   SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, 0);
 
   Circle trigCircle = {LEFT_MARGIN, HEIGHT/2, LEFT_MARGIN - 10};
+  ClockHand clockHand = {0};
+  Point points[NUM_OF_POINTS];
   
   int program_running = 1;
   SDL_Event event;
@@ -31,7 +33,11 @@ int main(void)
     DrawX_Axis(renderer);
     DrawY_Axis(renderer);
 
-    DrawTrigCircle(renderer, trigCircle);
+    ComputeCircle(&points, trigCircle);
+
+    DrawTrigCircle(renderer, points);
+    UpdateClockHand(&clockHand, trigCircle);
+    DrawClockHand(renderer, trigCircle, &clockHand);
 
     SDL_RenderPresent(renderer);
     SDL_Delay(FRAME_DURATION);

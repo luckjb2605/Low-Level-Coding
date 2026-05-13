@@ -20,6 +20,7 @@ public:
   int GetScore();
   bool Started();
   bool IsRunning();
+  int GetHighscore();
   void SwitchPause();
   void ChangeSnakeDirection(Direction direction);
   void CheckCollisionWithFood();
@@ -31,7 +32,8 @@ private:
   Snake snake;
   Food food;
   bool running;
-  int score = 0;
+  int score;
+  int highscore;
   void GameOver();
   Vector2 GetFoodPosition();
   Sound eat;
