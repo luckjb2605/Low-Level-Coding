@@ -1,19 +1,26 @@
 #pragma once
+#include <stdint.h>
 
 constexpr int WIDTH = 900;
 constexpr int HEIGHT = 600;
 
+constexpr int CIRCLE_X = WIDTH/2;
+constexpr int CIRCLE_Y = HEIGHT/2;
+constexpr int CIRCLE_RADIUS = std::min(WIDTH, HEIGHT)/2 - 10;
+
 constexpr int FPS = 60;
 constexpr double FRAME_DURATION = 1000.0/FPS;
 
-constexpr int LEFT_MARGIN = 150;
-constexpr int NUM_OF_POINTS = 500;
+constexpr int NUM_OF_POINTS = 100; // For the circumference
+constexpr float ANGULAR_SPEED = 30.0f; // Degrees per second
 
-constexpr int BLACK = 0x00000000;
-constexpr int WHITE = 0x00ffffff;
+constexpr uint32_t BLACK = 0x000000FF;
+constexpr uint32_t WHITE = 0xFFFFFFFF;
+constexpr uint32_t PROJX_COLOR = 0xFF0000FF;
+constexpr uint32_t PROJY_COLOR = 0x0000FFFF;
+constexpr int TRACE_SIZE = 5; // Of dotted link (px)
 
-constexpr int STEPS = 300;
-constexpr int ANGULAR_SPEED = 10;
+enum Axis { X, Y };
 
 typedef struct Point
 {
@@ -21,16 +28,8 @@ typedef struct Point
   int y;
 } Point;
 
-typedef struct Circle
+typedef struct Line
 {
-  int x;
-  int y;
-  int radius;
-} Circle;
-
-typedef struct ClockHand
-{
-  double theta;
-  int pointerX;
-  int pointerY;
-} ClockHand;
+  Point start;
+  Point end;
+} Line;

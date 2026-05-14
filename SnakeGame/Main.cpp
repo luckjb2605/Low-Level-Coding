@@ -79,8 +79,8 @@ int main(void)
       {
         game.Update();
         game.CheckCollisionWithFood();
-        game.CheckCollisionWithBorder();
-        game.CheckCollisionWithBody();
+        // game.CheckCollisionWithBorder();
+        // game.CheckCollisionWithBody();
       }
       
       if (IsKeyPressed(KEY_W)||IsKeyPressed(KEY_UP))

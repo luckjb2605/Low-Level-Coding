@@ -11,7 +11,7 @@
 #define COLOR_BLACK 0x00000000
 #define COLOR_YELLOW 0x00ffdd77
 
-#define RAYS_NUMBER 200
+#define RAYS_NUMBER 400
 #define SPEED 400/60
 
 typedef enum Direction
@@ -105,7 +105,7 @@ void FillRays(SDL_Surface* surface, Ray rays[RAYS_NUMBER], Circle shadow, Uint32
     {
       if (x_draw < 0 || x_draw > WIDTH)
         end_of_screen = 1;
-      if (y_draw < 0 || y_draw > WIDTH)
+      if (y_draw < 0 || y_draw > HEIGHT)
         end_of_screen = 1;
       
       SDL_Rect pixel = (SDL_Rect){x_draw,y_draw,1,1};

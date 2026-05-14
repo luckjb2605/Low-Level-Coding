@@ -7,9 +7,15 @@
       "type": "shell",
       "args": [
         "main.cpp",
-        "drawer.cpp",
+        "Circle/Circle.cpp",
+        "ClockHand/ClockHand.cpp",
+        "DeltaTimer/DeltaTimer.cpp",
+        "Drawer/Drawer.cpp",
+        "Projection/Projection.cpp",
+        "Program/Program.cpp",
+        "-I.",
         "-o",
-        "main",
+        ".build/main",
         "-lSDL2"
       ],
       "group": "build"
@@ -17,7 +23,7 @@
     {
       "label": "Run main",
       "type": "shell",
-      "command": "./main",
+      "command": "./.build/main",
       "dependsOn": "Build main",
       "group": {
         "kind": "build",
