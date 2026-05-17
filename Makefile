@@ -1,6 +1,6 @@
 
 CFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm
-BUILD_DIR = build
+BUILD_DIR = .build
 
 SRC = $(SRC_DIR)/$(FILE).$(EXT)
 OUT = $(BUILD_DIR)/$(FILE).exe
