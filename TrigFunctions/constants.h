@@ -4,15 +4,17 @@
 constexpr int WIDTH = 900;
 constexpr int HEIGHT = 600;
 
-constexpr int CIRCLE_X = WIDTH/2;
+constexpr int CIRCLE_RADIUS = 100;
+constexpr int CIRCLE_X = CIRCLE_RADIUS + 10;
 constexpr int CIRCLE_Y = HEIGHT/2;
-constexpr int CIRCLE_RADIUS = std::min(WIDTH, HEIGHT)/2 - 10;
+// constexpr int CIRCLE_RADIUS = std::min(WIDTH, HEIGHT)/2 - 10;
 
 constexpr int FPS = 60;
 constexpr double FRAME_DURATION = 1000.0/FPS;
 
-constexpr int NUM_OF_POINTS = 100; // For the circumference
+constexpr int NUM_OF_POINTS = 1200; // For the circumference
 constexpr float ANGULAR_SPEED = 30.0f; // Degrees per second
+constexpr float STEP_ANGLE = 360.0f / NUM_OF_POINTS;
 
 constexpr uint32_t BLACK = 0x000000FF;
 constexpr uint32_t WHITE = 0xFFFFFFFF;

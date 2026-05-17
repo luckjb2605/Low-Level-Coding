@@ -8,7 +8,7 @@ Program::Program()
   , projX({X, &trigCircle, PROJX_COLOR})
   , projY({Y, &trigCircle, PROJY_COLOR})
   , running(true)
-{ trigCircle.ComputePoints(); }
+{}
 
 SDL_Window* Program::CreateWindow()
 {
@@ -63,12 +63,19 @@ void Program::Draw()
 
 void Program::Run()
 {
+  trigCircle.ComputePoints();
   while (running)
   {
     HandleEvents();
     Update();
     Draw();
     SDL_Delay(FRAME_DURATION);
+    printf(
+      "Angle: %.4f, Cos: %.4f, Sin: %.4f\n",
+      clockHand.GetAngle(),
+      cos(clockHand.GetAngle()),
+      sin(clockHand.GetAngle())
+    );
   }
 }
 

@@ -8,9 +8,11 @@ float ClockHand::GetAngle() const { return angle; };
 
 void ClockHand::Update(Circle circle, float dt)
 {
-  angle += ANGULAR_SPEED * dt;
+  float dtheta = ANGULAR_SPEED * dt;
+  angle += dtheta;
   if (angle >= 360) angle -= 360;
   
+  // Don't need to do this every frame (Own circle?)
   tail = circle.GetCenter();
 
   int currentPoint = NUM_OF_POINTS * (angle / 360.0f);

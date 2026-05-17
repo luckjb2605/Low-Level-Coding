@@ -10,8 +10,15 @@ Point Projection::GetCenter()   const { return center; }
 Point Projection::GetHead()     const { return head; }
 uint32_t Projection::GetColor() const { return color; }
 
+float RoundDown(float numToRound, float rounder)
+{
+  if (rounder==0) return 0;
+  return std::floor(numToRound/rounder) * rounder;
+}
+
 void Projection::Update(float angle)
 {
+  angle = RoundDown(angle, STEP_ANGLE);
   if (axis == X)
   {
     head.x = center.x +
@@ -44,7 +51,7 @@ std::vector<Line> Projection::GetLink(Point point)
   std::vector<Line> link;
   link.reserve(steps);
   
-  for (int i=0; i<(steps-2); i+=2)
+  for (int i=0; i<(steps-1); i+=2)
   {
     float t1 = (float)(i)   / steps;
     float t2 = (float)(i+1) / steps;

@@ -1,0 +1,28 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "Win32",
+      "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-gcc-x64",
+
+      "includePath": [
+        "${workspaceFolder}/**",
+
+        "C:/VulkanSDK/1.4.350.0/Include",
+
+        "C:/msys64/ucrt64/include",
+        "C:/Users/Lucas/Documents/Visual Studio Code/Libraries/glfw-3.4.bin.WIN64/include",
+        "C:/Users/Lucas/Documents/Visual Studio Code/Libraries/glm-1.0.3"
+      ],
+
+      "defines": [
+        "GLFW_INCLUDE_VULKAN",
+        "GLM_FORCE_RADIANS",
+        "GLM_FORCE_DEPTH_ZERO_TO_ONE"
+      ]
+    }
+  ]
+}
