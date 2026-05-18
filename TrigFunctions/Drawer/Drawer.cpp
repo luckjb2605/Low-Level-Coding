@@ -24,8 +24,8 @@ void Drawer::DrawX_Axis()
 {
   SetDrawColor(WHITE);
   SDL_RenderDrawLine(renderer,
-    0, HEIGHT/2,
-    WIDTH, HEIGHT/2
+    0, CIRCLE_Y,
+    WIDTH, CIRCLE_Y
   );
 }
 
@@ -84,4 +84,32 @@ void Drawer::DrawLink(const std::vector<Line> &lines, uint32_t color)
       line.end.x,
       line.end.y
     );
+}
+
+void Drawer::DrawFunction(const Function& function, uint32_t color)
+{
+  SetDrawColor(color);
+
+  const auto& points = function.GetPoints();
+
+  if (function.GetFunctionType() == Horizontal)
+  {
+    for (int x=0; x<points.size(); x++)
+    {
+      SDL_RenderDrawPoint(renderer,
+        x + function.GetOrigin(), 
+        points.at(x)
+      );
+    }
+  } else
+  if (function.GetFunctionType() == Vertical)
+  {
+    for (int y=0; y<points.size(); y++)
+    {
+      SDL_RenderDrawPoint(renderer,
+        points.at(y),
+        y + function.GetOrigin()
+      );
+    }
+  }
 }

@@ -7,6 +7,8 @@ Program::Program()
   , trigCircle({CIRCLE_X, CIRCLE_Y}, CIRCLE_RADIUS)
   , projX({X, &trigCircle, PROJX_COLOR})
   , projY({Y, &trigCircle, PROJY_COLOR})
+  , sineFunction(Horizontal, CIRCLE_X)
+  , cosineFunction(HORIZONTIFY_COSINE ? Horizontal : Vertical, CIRCLE_X)
   , running(true)
 {}
 
@@ -30,12 +32,26 @@ void Program::HandleEvents()
   }
 }
 
+int HorizontifyFunction(int x)
+{
+  int cosineValue = CIRCLE_X - x;
+  // You have to sum cosineValue, because coming from x values,
+  // "up" (right) increases, but in y values, it decreases.
+  int yRepresentation = CIRCLE_Y + cosineValue;
+  return yRepresentation;
+}
+
 void Program::Update()
 {
   dt = timer.Update();
   clockHand.Update(trigCircle, dt);
   projX.Update(clockHand.GetAngle());
   projY.Update(clockHand.GetAngle());
+  sineFunction.Update(projY.GetHead().y);
+  if (HORIZONTIFY_COSINE)
+    cosineFunction.Update(HorizontifyFunction(projX.GetHead().x));
+  else
+    cosineFunction.Update(projX.GetHead().x);
 }
 
 void Program::Draw()
@@ -58,6 +74,13 @@ void Program::Draw()
   drawer.DrawTrigCircle(&trigCircle);
   drawer.DrawClockHand(&clockHand);
 
+  drawer.DrawFunction(
+    cosineFunction,
+    PROJX_COLOR);
+  drawer.DrawFunction(
+    sineFunction,
+    PROJY_COLOR);
+
   SDL_RenderPresent(renderer);
 }
 
@@ -70,12 +93,6 @@ void Program::Run()
     Update();
     Draw();
     SDL_Delay(FRAME_DURATION);
-    printf(
-      "Angle: %.4f, Cos: %.4f, Sin: %.4f\n",
-      clockHand.GetAngle(),
-      cos(clockHand.GetAngle()),
-      sin(clockHand.GetAngle())
-    );
   }
 }
 

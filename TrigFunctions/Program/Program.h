@@ -5,6 +5,7 @@
 #include "Circle/Circle.h"
 #include "DeltaTimer/DeltaTimer.h"
 #include "ClockHand/ClockHand.h"
+#include "Function/Function.hpp"
 
 class Program
 {
@@ -19,6 +20,8 @@ private:
   ClockHand clockHand;
   Projection projX;
   Projection projY;
+  Function sineFunction;
+  Function cosineFunction;
 
   bool running;
   float dt;

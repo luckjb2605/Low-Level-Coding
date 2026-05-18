@@ -6,6 +6,7 @@
 
 #include "Projection/Projection.h"
 #include "ClockHand/ClockHand.h"
+#include "Function/Function.hpp"
 #include "Circle/Circle.h"
 #include "constants.h"
 
@@ -23,4 +24,5 @@ public:
   void DrawClockHand(const ClockHand*);
   void DrawProjection(const Projection*);
   void DrawLink(const std::vector<Line>&, uint32_t color);
+  void DrawFunction(const Function&, uint32_t color);
 };
