@@ -18,19 +18,30 @@ float RoundDown(float numToRound, float rounder)
 
 void Projection::Update(float angle)
 {
-  angle = RoundDown(angle, STEP_ANGLE);
+  float stepAngle = STEP_ANGLE * M_PI / 180.0f;
+  angle = RoundDown(angle, stepAngle);
   if (axis == X)
   {
     head.x = center.x +
-      circle->GetRadius() * cos(angle*M_PI/180);
+      circle->GetRadius() * cos(angle);
     head.y = center.y;
   } else
   if (axis == Y)
   {
     head.x = center.x;
     head.y = center.y -
-      circle->GetRadius() * sin(angle*M_PI/180);
+      circle->GetRadius() * sin(angle);
   }
+}
+
+float Projection::GetModulus()
+{
+  float projectionSize;
+  if      (axis == X)
+    projectionSize = head.x - center.x;
+  else if (axis == Y)
+    projectionSize = center.y - head.y;
+  return projectionSize / circle->GetRadius();
 }
 
 /**

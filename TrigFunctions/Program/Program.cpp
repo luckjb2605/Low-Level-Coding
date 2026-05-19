@@ -5,8 +5,10 @@ Program::Program()
   , renderer(SDL_CreateRenderer(window, -1, 0))
   , drawer(renderer)
   , trigCircle({CIRCLE_X, CIRCLE_Y}, CIRCLE_RADIUS)
-  , projX({X, &trigCircle, PROJX_COLOR})
-  , projY({Y, &trigCircle, PROJY_COLOR})
+  , angle(trigCircle.GetCenter(), ANGLE_RADIUS)
+  , clockHand(trigCircle.GetCenter())
+  , projX({X, &trigCircle, RED})
+  , projY({Y, &trigCircle, BLUE})
   , sineFunction(Horizontal, CIRCLE_X)
   , cosineFunction(HORIZONTIFY_COSINE ? Horizontal : Vertical, CIRCLE_X)
   , running(true)
@@ -44,9 +46,13 @@ int HorizontifyFunction(int x)
 void Program::Update()
 {
   dt = timer.Update();
-  clockHand.Update(trigCircle, dt);
-  projX.Update(clockHand.GetAngle());
-  projY.Update(clockHand.GetAngle());
+  angle.Update(ANGULAR_SPEED, dt);
+  clockHand.Update(
+    trigCircle,
+    angle.GetTheta()
+  );
+  projX.Update(angle.GetTheta());
+  projY.Update(angle.GetTheta());
   sineFunction.Update(projY.GetHead().y);
   if (HORIZONTIFY_COSINE)
     cosineFunction.Update(HorizontifyFunction(projX.GetHead().x));
@@ -76,12 +82,24 @@ void Program::Draw()
 
   drawer.DrawFunction(
     cosineFunction,
-    PROJX_COLOR);
+    RED);
   drawer.DrawFunction(
     sineFunction,
-    PROJY_COLOR);
+    BLUE);
+
+  drawer.DrawAngle(angle);
 
   SDL_RenderPresent(renderer);
+}
+
+void Program::PrintState()
+{
+  printf(
+    "Angle: %.2f, Sine: %.2f, Cosine: %.2f\n",
+    angle.GetTheta(),
+    projY.GetModulus(),
+    projX.GetModulus()
+  );
 }
 
 void Program::Run()
@@ -92,6 +110,7 @@ void Program::Run()
     HandleEvents();
     Update();
     Draw();
+    PrintState();
     SDL_Delay(FRAME_DURATION);
   }
 }

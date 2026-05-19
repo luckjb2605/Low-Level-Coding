@@ -17,6 +17,7 @@ public:
   Point    GetHead()   const;
   uint32_t GetColor()  const;
   void Update(float angle);
+  float GetModulus();
   std::vector<Line> GetLink(Point);
 private:
   Axis axis;

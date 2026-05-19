@@ -51,6 +51,26 @@ void Drawer::DrawTrigCircle(const Circle* circle)
   }
 }
 
+void Drawer::DrawAngle(const Angle& angle)
+{
+  SetDrawColor(GREEN);
+  float step = M_PI / (360 * 1);
+  for (float i=0; i<angle.GetTheta(); i+=step)
+  {
+    int x = angle.GetOrigin().x 
+      + angle.GetRadius() * cos(i);
+    
+    int y = angle.GetOrigin().y 
+      - angle.GetRadius() * sin(i);
+
+    SDL_RenderDrawLine(renderer,
+      angle.GetOrigin().x,
+      angle.GetOrigin().y,
+      x, y
+    );
+  }
+}
+
 void Drawer::DrawClockHand(const ClockHand* clockHand)
 {
   SetDrawColor(WHITE);

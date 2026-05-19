@@ -1,17 +1,20 @@
 #pragma once
+#define _USE_MATH_DEFINES
 #include <SDL2/SDL.h>
 #include "Circle/Circle.h"
+#include <cmath>
 
 class ClockHand
 {
 private:
-  float angle; //degrees
   Point tail;
   Point head;
 public:
-  ClockHand();
+  ClockHand(Point tail);
   Point GetTail()  const;
   Point GetHead()  const;
-  float GetAngle() const;
-  void Update(Circle circle, float dt);
+  void Update(
+    Circle& circle,
+    float angle
+  );
 };

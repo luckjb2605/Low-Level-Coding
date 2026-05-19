@@ -20,12 +20,14 @@ constexpr float STEP_ANGLE = 360.0f / NUM_OF_POINTS;
 
 constexpr uint32_t BLACK = 0x000000FF;
 constexpr uint32_t WHITE = 0xFFFFFFFF;
-constexpr uint32_t PROJX_COLOR = 0xFF0000FF;
-constexpr uint32_t PROJY_COLOR = 0x0000FFFF;
+constexpr uint32_t GREEN = 0x00FF00FF;
+constexpr uint32_t RED = 0xFF0000FF;
+constexpr uint32_t BLUE = 0x0000FFFF;
 constexpr int TRACE_SIZE = 5; // Of dotted link (px)
 
 constexpr int FUNCTION_POINTS = WIDTH - CIRCLE_X;
 constexpr bool HORIZONTIFY_COSINE = true;
+constexpr int ANGLE_RADIUS = 10;
 
 
 enum Axis { X, Y };
